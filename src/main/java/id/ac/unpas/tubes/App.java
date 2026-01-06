@@ -1,16 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package id.ac.unpas.tubes;
 
-/**
- *
- * @author Hilman Zaldi
- */
-public class App {
+import id.ac.unpas.tubes.view.MainFrame;
+import javax.swing.SwingUtilities;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        // Menjalankan Swing di Event Dispatch Thread (Best Practice)
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainFrame().setVisible(true);
+            }
+        });
     }
 }
