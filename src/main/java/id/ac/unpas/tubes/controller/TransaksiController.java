@@ -22,7 +22,7 @@ public class TransaksiController {
 				model.addRow(new Object[]{
 					rs.getString("id"),
 					rs.getString("tanggal"),
-					rs.getString("jenis"),
+					rs.getString("jenis_transaksi"),
 					rs.getInt("jumlah"),
 					rs.getString("id_barang")
 				});
@@ -40,14 +40,13 @@ public class TransaksiController {
 			return;
 		}
 		try {
-			String sql = "INSERT INTO transaksi VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO transaksi (tanggal, jenis_transaksi, jumlah, id_barang) VALUES (?, ?, ?, ?)";
 			Connection conn = DatabaseConnection.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setString(2, tanggal);
-			pstmt.setString(3, jenis);
-			pstmt.setInt(4, jumlah);
-			pstmt.setString(5, idBarang);
+			pstmt.setString(1, tanggal);
+			pstmt.setString(2, jenis);
+			pstmt.setInt(3, jumlah);
+			pstmt.setString(4, idBarang);
 			pstmt.executeUpdate();
 			javax.swing.JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
 		} catch (SQLException e) {
@@ -58,7 +57,7 @@ public class TransaksiController {
 	// UPDATE
 	public void updateTransaksi(String id, String tanggal, String jenis, int jumlah, String idBarang) {
 		try {
-			String sql = "UPDATE transaksi SET tanggal=?, jenis=?, jumlah=?, id_barang=? WHERE id=?";
+			String sql = "UPDATE transaksi SET tanggal=?, jenis_transaksi=?, jumlah=?, id_barang=? WHERE id=?";
 			Connection conn = DatabaseConnection.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, tanggal);

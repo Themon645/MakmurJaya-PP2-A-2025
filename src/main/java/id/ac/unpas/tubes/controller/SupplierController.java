@@ -20,9 +20,9 @@ public class SupplierController {
 			while (rs.next()) {
 				model.addRow(new Object[]{
 					rs.getString("id"),
-					rs.getString("nama"),
+					rs.getString("nama_supplier"),
 					rs.getString("alamat"),
-					rs.getString("no_telepon")
+					rs.getString("no_telp")
 				});
 			}
 		} catch (SQLException e) {
@@ -38,13 +38,12 @@ public class SupplierController {
 			return;
 		}
 		try {
-			String sql = "INSERT INTO supplier VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO supplier (nama_supplier, alamat, no_telp) VALUES (?, ?, ?)";
 			Connection conn = DatabaseConnection.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setString(2, nama);
-			pstmt.setString(3, alamat);
-			pstmt.setString(4, noTelepon);
+			pstmt.setString(1, nama);
+			pstmt.setString(2, alamat);
+			pstmt.setString(3, noTelepon);
 			pstmt.executeUpdate();
 			javax.swing.JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
 		} catch (SQLException e) {
@@ -55,7 +54,7 @@ public class SupplierController {
 	// UPDATE
 	public void updateSupplier(String id, String nama, String alamat, String noTelepon) {
 		try {
-			String sql = "UPDATE supplier SET nama=?, alamat=?, no_telepon=? WHERE id=?";
+			String sql = "UPDATE supplier SET nama_supplier=?, alamat=?, no_telp=? WHERE id=?";
 			Connection conn = DatabaseConnection.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, nama);
