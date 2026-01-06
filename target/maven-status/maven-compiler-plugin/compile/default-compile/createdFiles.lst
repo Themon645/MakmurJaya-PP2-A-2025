@@ -1,8 +1,9 @@
-id/ac/unpas/tubes/controller/TransaksiController.class
-id/ac/unpas/tubes/model/Transaksi.class
-id/ac/unpas/tubes/controller/BarangController.class
-id/ac/unpas/tubes/controller/SupplierController.class
-id/ac/unpas/tubes/model/Suppiler.class
-id/ac/unpas/tubes/model/Barang.class
-id/ac/unpas/tubes/view/BarangForm$1.class
-id/ac/unpas/tubes/view/BarangForm.class
+id\ac\unpas\tubes\model\Transaksi.class
+id\ac\unpas\tubes\view\BarangForm.class
+id\ac\unpas\tubes\controller\TransaksiController.class
+id\ac\unpas\tubes\controller\SupplierController.class
+id\ac\unpas\tubes\view\SupplierForm$1.class
+id\ac\unpas\tubes\controller\BarangController.class
+id\ac\unpas\tubes\model\Supplier.class
+id\ac\unpas\tubes\model\Barang.class
+id\ac\unpas\tubes\view\BarangForm$1.class

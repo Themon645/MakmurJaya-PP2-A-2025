@@ -4,10 +4,15 @@ import id.ac.unpas.tubes.controller.SupplierController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SupplierForm extends JFrame {
 	private JTextField txtId, txtNama, txtAlamat, txtNoTelepon;
-	private JButton btnSimpan, btnUbah, btnHapus, btnReset;
+	private JButton btnSimpan, btnUbah, btnHapus, btnReset, btnExportPDF;
 	private JTable tableSupplier;
 	private SupplierController controller;
 
@@ -19,7 +24,7 @@ public class SupplierForm extends JFrame {
 
 	private void initComponents() {
 		setTitle("Kelola Data Supplier");
-		setSize(800, 600);
+		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
 
@@ -56,24 +61,28 @@ public class SupplierForm extends JFrame {
 		add(txtNoTelepon);
 
 		btnSimpan = new JButton("Simpan");
-		btnSimpan.setBounds(20, 190, 80, 30);
+		btnSimpan.setBounds(20, 230, 80, 30);
 		add(btnSimpan);
 
 		btnUbah = new JButton("Ubah");
-		btnUbah.setBounds(110, 190, 80, 30);
+		btnUbah.setBounds(110, 230, 80, 30);
 		add(btnUbah);
 
 		btnHapus = new JButton("Hapus");
-		btnHapus.setBounds(200, 190, 80, 30);
+		btnHapus.setBounds(200, 230, 80, 30);
 		add(btnHapus);
 
 		btnReset = new JButton("Reset");
-		btnReset.setBounds(290, 190, 80, 30);
+		btnReset.setBounds(290, 230, 80, 30);
 		add(btnReset);
+
+		btnExportPDF = new JButton("Export PDF");
+		btnExportPDF.setBounds(20, 270, 120, 30);
+		add(btnExportPDF);
 
 		tableSupplier = new JTable();
 		JScrollPane scrollPane = new JScrollPane(tableSupplier);
-		scrollPane.setBounds(350, 20, 400, 500);
+		scrollPane.setBounds(400, 20, 450, 500);
 		add(scrollPane);
 
 		btnSimpan.addActionListener(e -> {
@@ -110,6 +119,8 @@ public class SupplierForm extends JFrame {
 		});
 
 		btnReset.addActionListener(e -> resetForm());
+
+		btnExportPDF.addActionListener(e -> exportToPdf());
 
 		tableSupplier.addMouseListener(new MouseAdapter() {
 			@Override
@@ -148,5 +159,72 @@ public class SupplierForm extends JFrame {
 			return false;
 		}
 		return true;
+	}
+
+	private void exportToPdf() {
+		try {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Simpan PDF");
+			fileChooser.setSelectedFile(new java.io.File("Data_Supplier_" + 
+				new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf"));
+			
+			int userSelection = fileChooser.showSaveDialog(this);
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+				if (!filePath.toLowerCase().endsWith(".pdf")) {
+					filePath += ".pdf";
+				}
+				
+				Document document = new Document(PageSize.A4);
+				PdfWriter.getInstance(document, new FileOutputStream(filePath));
+				document.open();
+				
+				// Judul
+				Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+				Paragraph title = new Paragraph("LAPORAN DATA SUPPLIER\n\n", titleFont);
+				title.setAlignment(Element.ALIGN_CENTER);
+				document.add(title);
+				
+				// Info tanggal
+				Font dateFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+				Paragraph date = new Paragraph("Tanggal: " + new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date()) + "\n\n", dateFont);
+				document.add(date);
+				
+				// Tabel
+				PdfPTable pdfTable = new PdfPTable(4);
+				pdfTable.setWidthPercentage(100);
+				pdfTable.setWidths(new float[]{1.5f, 3f, 4f, 2f});
+				
+				// Header
+				Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+				String[] headers = {"ID", "Nama Supplier", "Alamat", "No Telepon"};
+				for (String header : headers) {
+					PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
+					cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setPadding(5);
+					pdfTable.addCell(cell);
+				}
+				
+				// Data
+				DefaultTableModel model = (DefaultTableModel) tableSupplier.getModel();
+				Font dataFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+				for (int i = 0; i < model.getRowCount(); i++) {
+					for (int j = 0; j < model.getColumnCount(); j++) {
+						PdfPCell cell = new PdfPCell(new Phrase(model.getValueAt(i, j).toString(), dataFont));
+						cell.setPadding(5);
+						pdfTable.addCell(cell);
+					}
+				}
+				
+				document.add(pdfTable);
+				document.close();
+				
+				JOptionPane.showMessageDialog(this, "PDF berhasil diekspor ke: " + filePath);
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Error saat export PDF: " + ex.getMessage());
+			ex.printStackTrace();
+		}
 	}
 }
