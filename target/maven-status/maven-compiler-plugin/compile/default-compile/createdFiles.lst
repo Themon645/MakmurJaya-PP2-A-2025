@@ -1,9 +1,16 @@
 id\ac\unpas\tubes\model\Transaksi.class
 id\ac\unpas\tubes\view\BarangForm.class
+id\ac\unpas\tubes\view\TransaksiForm.class
 id\ac\unpas\tubes\controller\TransaksiController.class
+id\ac\unpas\tubes\view\SupplierForm.class
+id\ac\unpas\tubes\App.class
+id\ac\unpas\tubes\App$1.class
 id\ac\unpas\tubes\controller\SupplierController.class
 id\ac\unpas\tubes\view\SupplierForm$1.class
 id\ac\unpas\tubes\controller\BarangController.class
+id\ac\unpas\tubes\view\MainFrame.class
 id\ac\unpas\tubes\model\Supplier.class
+id\ac\unpas\tubes\view\TransaksiForm$1.class
 id\ac\unpas\tubes\model\Barang.class
+id\ac\unpas\tubes\model\DatabaseConnection.class
 id\ac\unpas\tubes\view\BarangForm$1.class
